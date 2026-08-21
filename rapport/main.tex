@@ -1,0 +1,132 @@
+\documentclass[12pt,a4paper]{report}
+
+% ---------------------------------------------------------------------------
+% Préambule
+% ---------------------------------------------------------------------------
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[french]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[margin=2.5cm,headheight=14pt]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage{caption}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xurl}
+
+\onehalfspacing
+\emergencystretch=3em
+
+\lstset{
+  basicstyle=\ttfamily\footnotesize,
+  breaklines=true,
+  frame=single,
+  columns=fullflexible,
+  showstringspaces=false,
+  captionpos=b,
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\small Estimation de la valeur des biens immobiliers résidentiels au Sénégal}
+\fancyhead[R]{\small\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\titleformat{\chapter}[display]
+  {\normalfont\huge\bfseries}{\chaptertitlename\ \thechapter}{20pt}{\Huge}
+\titlespacing*{\chapter}{0pt}{0pt}{40pt}
+
+% ---------------------------------------------------------------------------
+% Informations du document, à adapter si besoin
+% ---------------------------------------------------------------------------
+\newcommand{\auteurUn}{[Votre Nom Complet]}
+\newcommand{\sujetTitre}{Estimation de la valeur des biens immobiliers résidentiels au Sénégal : prédiction des prix, optimisation des paramètres d'entraînement et interface graphique interactive}
+\newcommand{\anneeAcademique}{2025-2026}
+
+\begin{document}
+
+% ---------------------------------------------------------------------------
+% Page de garde
+% ---------------------------------------------------------------------------
+\input{chapters/00_page_garde}
+
+% ---------------------------------------------------------------------------
+% Front matter
+% ---------------------------------------------------------------------------
+\pagenumbering{roman}
+
+\input{chapters/00_dedicace}
+\input{chapters/00_remerciements}
+\input{chapters/00_glossaire}
+
+\renewcommand{\listfigurename}{Liste des figures}
+\listoffigures
+\clearpage
+
+\renewcommand{\listtablename}{Liste des tableaux}
+\listoftables
+\clearpage
+
+\input{chapters/00_resume}
+\input{chapters/00_abstract}
+
+\chapter*{Sommaire}
+\addcontentsline{toc}{chapter}{Sommaire}
+\begin{enumerate}
+  \item[] Introduction
+  \item[] Chapitre I : État de l'art
+  \item[] Chapitre II : Analyse de besoins et méthodologie
+  \item[] Chapitre III : Implémentation
+  \item[] Conclusion générale
+  \item[] Bibliographie et webographie
+  \item[] Annexes
+\end{enumerate}
+\clearpage
+
+% ---------------------------------------------------------------------------
+% Corps du document
+% ---------------------------------------------------------------------------
+\pagenumbering{arabic}
+
+\input{chapters/01_introduction}
+\input{chapters/02_etat_de_lart}
+\input{chapters/03_methodologie}
+\input{chapters/04_implementation}
+\input{chapters/05_conclusion}
+
+% ---------------------------------------------------------------------------
+% Bibliographie / Webographie
+% ---------------------------------------------------------------------------
+\clearpage
+\addcontentsline{toc}{chapter}{Bibliographie}
+\renewcommand{\bibname}{Bibliographie}
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\input{chapters/07_webographie}
+
+% ---------------------------------------------------------------------------
+% Annexes
+% ---------------------------------------------------------------------------
+\appendix
+\input{chapters/06_annexes}
+
+% ---------------------------------------------------------------------------
+% Table des matières (en fin de document, conformément au gabarit DIT)
+% ---------------------------------------------------------------------------
+\clearpage
+\renewcommand{\contentsname}{Table des matières}
+\tableofcontents
+
+\end{document}

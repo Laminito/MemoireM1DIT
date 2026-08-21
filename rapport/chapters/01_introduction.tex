@@ -1,0 +1,68 @@
+\chapter{Introduction}
+
+\section{Contexte et justification}
+
+Le secteur immobilier occupe une place croissante dans l'économie sénégalaise, porté par
+l'urbanisation rapide de l'agglomération dakaroise et le développement de pôles urbains
+secondaires (Diamniadio, Thiès, Mbour). Pourtant, contrairement à des marchés plus matures où
+des bases de données de transactions publiques (cadastre ouvert, historiques notariaux)
+permettent une estimation relativement transparente des prix, le marché sénégalais souffre
+d'un déficit important d'information centralisée : les prix affichés sur les plateformes
+d'annonces sont négociables, très hétérogènes d'un quartier à l'autre, et aucune base de
+données publique ne permet aujourd'hui d'objectiver la valeur d'un bien à partir de ses
+caractéristiques.
+
+Cette opacité pénalise autant les particuliers (acheteurs, vendeurs) que les professionnels
+(agences immobilières, banques accordant des prêts hypothécaires) qui doivent s'appuyer sur
+l'expertise de terrain ou sur la méthode dite « des comparables », intrinsèquement subjective
+et chronophage. L'essor de l'apprentissage automatique (\emph{machine learning}) et la
+multiplication des données disponibles en ligne — notamment via les plateformes d'annonces
+immobilières — ouvrent la voie à des modèles d'estimation automatique de la valeur des biens,
+communément appelés \emph{Automated Valuation Models} (AVM) dans la littérature.
+
+C'est dans ce contexte que s'inscrit ce projet informatique : construire, à partir de données
+réellement observées sur le marché sénégalais, un modèle capable d'estimer le prix d'un bien
+résidentiel (maison ou appartement), tout en explorant systématiquement l'apport de
+l'optimisation des hyperparamètres d'entraînement sur la qualité des prédictions, et en rendant
+ce modèle accessible via une interface graphique interactive plutôt que réservé à un usage
+technique.
+
+\section{Objectifs de la recherche}
+
+Ce projet poursuit trois objectifs principaux :
+
+\begin{enumerate}
+  \item \textbf{Constituer un jeu de données exploitable} sur les prix des biens immobiliers
+  résidentiels au Sénégal, en l'absence de source publique existante, par collecte automatisée
+  de données d'annonces réelles.
+  \item \textbf{Comparer plusieurs familles de modèles} de prédiction du prix (régression
+  linéaire, méthodes ensemblistes à base d'arbres, réseau de neurones), en optimisant
+  systématiquement leurs hyperparamètres d'entraînement par recherche aléatoire avec validation
+  croisée, afin d'identifier l'approche la plus pertinente au regard du volume de données
+  disponible.
+  \item \textbf{Développer une interface graphique interactive} permettant à un utilisateur non
+  technique d'obtenir une estimation de prix à partir des caractéristiques d'un bien, et
+  d'explorer visuellement les données et les performances des modèles.
+\end{enumerate}
+
+\section{Structure du projet informatique}
+
+Ce document est organisé en trois chapitres. Le \textbf{Chapitre~I} dresse un état de l'art du
+domaine, à la fois sur les méthodes classiques d'évaluation immobilière et sur les travaux de
+recherche appliquant l'apprentissage automatique à ce problème, en identifiant les zones encore
+peu explorées — en particulier dans le contexte ouest-africain. Le \textbf{Chapitre~II} détaille
+l'analyse des besoins, les sources de données mobilisées, le processus de collecte et de
+pré-traitement, ainsi que la méthodologie de modélisation et d'évaluation retenue. Le
+\textbf{Chapitre~III} présente l'implémentation réalisée : l'analyse exploratoire des données,
+les résultats obtenus pour chaque modèle, leur interprétation et leur mise en perspective avec
+la littérature, ainsi que les outils et l'architecture de la solution développée, incluant
+l'interface graphique interactive. Une conclusion générale dresse le bilan du projet et propose
+des perspectives d'amélioration.
+
+\section{Conclusion}
+
+Ce chapitre introductif a situé le projet dans son contexte : un marché immobilier sénégalais
+en expansion mais peu documenté, pour lequel les techniques d'apprentissage automatique offrent
+une opportunité concrète d'objectiver l'estimation des prix. Les trois objectifs — collecte de
+données, modélisation optimisée, restitution interactive — structurent l'ensemble de la
+démarche présentée dans les chapitres suivants.

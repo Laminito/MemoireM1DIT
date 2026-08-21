@@ -1,0 +1,93 @@
+{
+  "features": {
+    "numeric": [
+      "surface_m2",
+      "bedrooms"
+    ],
+    "categorical": [
+      "category",
+      "neighborhood_grouped"
+    ]
+  },
+  "categories": [
+    "Appartements à vendre",
+    "Maisons à vendre"
+  ],
+  "neighborhoods": [
+    "Almadies",
+    "Amitié",
+    "Autre",
+    "Bambilor",
+    "Castor",
+    "Cité keur gorgui",
+    "Corniche",
+    "Dakar",
+    "Diamniadio",
+    "Fann",
+    "Golf",
+    "Keur Massar",
+    "Lac Rose",
+    "Liberte 6",
+    "Liberte 6 extension",
+    "Mamelles",
+    "Mbao",
+    "Mermoz",
+    "Ngaparou",
+    "Ngor",
+    "Nguering",
+    "Ouakam",
+    "Ouest foire",
+    "Plateau",
+    "Point-e",
+    "Rufisque",
+    "Sacré-cœur",
+    "Saly",
+    "Saly Portudal",
+    "Somone",
+    "VDN",
+    "Virage",
+    "Yoff",
+    "Zac Mbao"
+  ],
+  "surface_m2_range": [
+    21.0,
+    2000.0
+  ],
+  "bedrooms_range": [
+    1,
+    15
+  ],
+  "best_model": "random_forest",
+  "model_files": {
+    "linear_regression": "linear_regression.joblib",
+    "random_forest": "random_forest.joblib",
+    "xgboost": "xgboost.joblib",
+    "mlp": "mlp.joblib"
+  },
+  "results": {
+    "Régression linéaire": {
+      "RMSE_FCFA": 148156085.9723132,
+      "MAE_FCFA": 89002101.77666458,
+      "MAPE_%": 39.68153150324187,
+      "R2": 0.5709700404450966
+    },
+    "Random Forest (optimisé)": {
+      "RMSE_FCFA": 112897339.15381925,
+      "MAE_FCFA": 73325764.77638452,
+      "MAPE_%": 34.042996068853185,
+      "R2": 0.7508757291335943
+    },
+    "XGBoost (optimisé)": {
+      "RMSE_FCFA": 125455686.71243574,
+      "MAE_FCFA": 79242132.23140499,
+      "MAPE_%": 37.73238315781952,
+      "R2": 0.6923695420044761
+    },
+    "MLP (optimisé)": {
+      "RMSE_FCFA": 125968082.7547628,
+      "MAE_FCFA": 82416153.93319917,
+      "MAPE_%": 37.019530373723484,
+      "R2": 0.6898515130019643
+    }
+  }
+}

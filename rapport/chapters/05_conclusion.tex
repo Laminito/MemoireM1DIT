@@ -1,0 +1,56 @@
+\chapter{Conclusion générale}
+
+\section{Bilan de l'étude}
+
+Ce projet informatique avait pour objectif de développer un système d'estimation de la valeur
+des biens immobiliers résidentiels au Sénégal, en explorant l'apport de l'optimisation des
+hyperparamètres d'entraînement et en rendant les résultats accessibles via une interface
+graphique interactive. Les trois objectifs fixés en introduction ont été atteints :
+
+\begin{itemize}
+  \item un jeu de données de 603 annonces exploitables a été constitué par extraction
+  automatisée depuis Expat-Dakar, en l'absence de toute source structurée préexistante pour le
+  marché sénégalais ;
+  \item quatre modèles ont été entraînés et comparés selon un protocole homogène, avec
+  optimisation systématique des hyperparamètres par recherche aléatoire et validation croisée
+  pour les trois modèles les plus complexes ; le modèle Random Forest optimisé obtient les
+  meilleures performances (MAE de 73,3 millions FCFA, MAPE de 34,0~\%, $R^2$ de 0,751),
+  devançant XGBoost et le réseau de neurones MLP ;
+  \item une application Streamlit interactive permet d'estimer le prix d'un bien, de comparer
+  les prédictions des quatre modèles, et d'explorer visuellement le jeu de données et les
+  performances des modèles.
+\end{itemize}
+
+Le projet confirme, dans le contexte spécifique et peu documenté du marché immobilier
+sénégalais, des tendances déjà observées dans la littérature internationale : la supériorité
+des méthodes ensemblistes à base d'arbres sur la régression linéaire classique, et la nécessité
+d'un volume de données conséquent pour que les réseaux de neurones expriment un avantage sur
+ces méthodes.
+
+\section{Perspectives}
+
+Plusieurs axes d'amélioration se dégagent de ce travail :
+
+\begin{enumerate}
+  \item \textbf{Enrichissement des données.} L'intégration de sources complémentaires (autres
+  plateformes d'annonces, données notariales si elles venaient à être ouvertes) permettrait
+  d'augmenter le volume et la diversité géographique du jeu de données, actuellement très
+  concentré sur Dakar.
+  \item \textbf{Enrichissement des variables.} L'ajout de caractéristiques non disponibles dans
+  les annonces actuelles — âge du bien, statut foncier (titre foncier), proximité d'axes ou
+  d'équipements, à obtenir par géocodage des adresses — permettrait de rapprocher les
+  performances du modèle de celles obtenues sur des jeux de données occidentaux plus riches en
+  variables.
+  \item \textbf{Suivi temporel des prix.} La collecte périodique des mêmes annonces
+  permettrait de suivre l'évolution des prix dans le temps et d'enrichir le modèle d'une
+  dimension temporelle, actuellement absente.
+  \item \textbf{Modèles d'ensemble combinés.} Une combinaison (\emph{stacking}) des prédictions
+  de Random Forest, XGBoost et du MLP pourrait améliorer encore la robustesse des estimations.
+  \item \textbf{Déploiement public.} La mise en ligne de l'application sur Streamlit Community
+  Cloud rendrait l'outil accessible au grand public, à l'image du projet de référence ayant
+  inspiré la structure de ce document.
+\end{enumerate}
+
+En définitive, ce projet constitue une première contribution méthodologique à l'estimation
+automatisée des prix immobiliers au Sénégal, et pose les bases d'un outil dont la précision
+pourrait être significativement améliorée par un enrichissement futur des données mobilisées.

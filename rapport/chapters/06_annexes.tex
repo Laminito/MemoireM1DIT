@@ -1,0 +1,83 @@
+\chapter{Annexes}
+
+\section{Extrait du script de collecte (\texttt{src/scraper.py})}
+
+\begin{lstlisting}[language=Python, caption={Extraction structurée d'une annonce à partir de ses attributs HTML \texttt{data-t-listing\_*}}]
+def parse_listing_card(anchor) -> dict:
+    data = anchor.attrs
+
+    bedrooms_tag = anchor.select_one(
+        ".listing-card__header__tags__item--no-of-bedrooms")
+    surface_tag = anchor.select_one(
+        ".listing-card__header__tags__item--square-metres")
+    bedrooms = extract_int_from_class(
+        bedrooms_tag.get("class", []),
+        "listing-card__header__tags__item--no-of-bedrooms_"
+    ) if bedrooms_tag else None
+    surface = extract_int_from_class(
+        surface_tag.get("class", []),
+        "listing-card__header__tags__item--square-metres_"
+    ) if surface_tag else None
+
+    return {
+        "listing_id": data.get("data-t-listing_id"),
+        "title": data.get("data-t-listing_title"),
+        "category": data.get("data-t-listing_category_title"),
+        "price_fcfa": data.get("data-t-listing_price"),
+        "currency": data.get("data-t-listing_currency"),
+        "bedrooms": bedrooms,
+        "surface_m2": surface,
+        "url": data.get("href"),
+    }
+\end{lstlisting}
+
+\section{Pipeline de prétraitement et d'entraînement (\texttt{scikit-learn})}
+
+\begin{lstlisting}[language=Python, caption={Pipeline de prétraitement commun à tous les modèles}]
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("num", StandardScaler(), NUMERIC_FEATURES),
+        ("cat", OneHotEncoder(handle_unknown="ignore"),
+         CATEGORICAL_FEATURES),
+    ]
+)
+
+rf_pipeline = Pipeline([
+    ("preprocessor", preprocessor),
+    ("model", RandomForestRegressor(random_state=RANDOM_STATE)),
+])
+
+rf_search = RandomizedSearchCV(
+    rf_pipeline,
+    param_distributions=rf_param_distributions,
+    n_iter=30,
+    cv=KFold(5, shuffle=True, random_state=RANDOM_STATE),
+    scoring="neg_mean_absolute_error",
+    random_state=RANDOM_STATE,
+    n_jobs=-1,
+)
+\end{lstlisting}
+
+\section{Liste des quartiers conservés individuellement}
+
+Les 33 quartiers suivants comptent chacun au moins 5 annonces dans le jeu de données nettoyé et
+sont conservés comme catégories individuelles (les quartiers moins représentés sont regroupés
+sous la catégorie \texttt{Autre}) : Almadies, Point-E, Mermoz, Mamelles, Fann, Ngor, Virage,
+Saly, Ngaparou, Sacré-Cœur, Amitié, Dakar, Plateau, Mbao, Nguering, VDN, Ouakam, Somone, Lac
+Rose, Yoff, et treize autres quartiers de moindre fréquence.
+
+\section{Structure du dépôt de code}
+
+\begin{lstlisting}
+MemoireM1/
+  src/scraper.py                 Collecte des annonces
+  data/raw/                      Donnees brutes scrapees
+  data/processed/                Donnees nettoyees
+  notebooks/
+    01_eda_nettoyage.ipynb       Nettoyage + analyse exploratoire
+    02_modelisation.ipynb        Modelisation + optimisation
+  models/                        Modeles entraines + metadonnees
+  app.py                         Interface Streamlit
+  requirements.txt               Dependances
+  rapport/                       Present document (LaTeX)
+\end{lstlisting}

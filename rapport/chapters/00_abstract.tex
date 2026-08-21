@@ -1,0 +1,28 @@
+\chapter*{Abstract}
+\addcontentsline{toc}{chapter}{Abstract}
+
+This Master 1 computer science project presents the development of an automatic valuation
+system for residential real estate (houses and apartments) in Senegal, based on machine
+learning techniques. The goal is twofold: to compare several prediction models through
+systematic hyperparameter optimization, and to make the results accessible through an
+interactive graphical interface.
+
+In the absence of any existing Senegalese real-estate dataset, a corpus of 660 sale listings
+was collected through automated web scraping from the Expat-Dakar platform, covering the
+whole country. After cleaning (removal of non-exploitable prices and of properties outside the
+single-unit residential scope), a dataset of 603 listings was retained, described by surface
+area, number of bedrooms, property type, and neighborhood.
+
+Four models were trained and compared: a linear regression (baseline), a Random Forest, a
+gradient boosting model (XGBoost), and a multi-layer perceptron (MLP) neural network — the
+latter three tuned through randomized hyperparameter search with cross-validation. The
+optimized Random Forest achieved the best performance on the test set (MAE of 73.3 million
+FCFA, MAPE of 34.0\%, $R^2$ of 0.751), outperforming both XGBoost and the neural network — a
+result consistent with the literature on modestly sized tabular datasets.
+
+An interactive web application built with Streamlit allows users to estimate a property's
+price from its characteristics, explore the dataset, and visually compare model performance.
+
+\vspace{0.5cm}
+\noindent\textbf{Keywords:} real estate, machine learning, hyperparameter optimization, Random
+Forest, XGBoost, neural network, Senegal, Streamlit.

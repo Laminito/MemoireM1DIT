@@ -1,0 +1,216 @@
+\chapter{Analyse de besoins et méthodologie}
+
+\section{I. Spécification des besoins et des données}
+
+\subsection{Analyse et spécification des besoins}
+
+Les utilisateurs finaux visés par ce projet sont les particuliers souhaitant estimer la valeur
+d'un bien avant une transaction, ainsi que les professionnels (agences immobilières) souhaitant
+disposer d'un outil d'aide à la décision rapide.
+
+\textbf{Besoins fonctionnels :}
+\begin{itemize}
+  \item Estimer le prix d'un bien résidentiel (maison ou appartement) à partir de ses
+  caractéristiques principales (type, quartier, surface, nombre de chambres).
+  \item Comparer les résultats de plusieurs modèles pour un même bien.
+  \item Explorer visuellement le jeu de données ayant servi à l'entraînement (distribution des
+  prix, prix par quartier, etc.).
+  \item Visualiser les performances comparées des modèles.
+\end{itemize}
+
+\textbf{Besoins non fonctionnels :}
+\begin{itemize}
+  \item Accessibilité via une interface web, sans compétence technique requise.
+  \item Reproductibilité du pipeline de collecte, nettoyage et entraînement.
+  \item Transparence sur la marge d'erreur des estimations produites.
+\end{itemize}
+
+\subsection{Sources de données}
+
+Une recherche préalable a permis d'écarter plusieurs pistes de données existantes :
+\begin{itemize}
+  \item aucun jeu de données immobilier sénégalais n'est disponible sur les plateformes usuelles
+  (Kaggle) ;
+  \item l'Agence Nationale de la Statistique et de la Démographie (ANSD) publie des indices
+  macro-économiques du secteur (indice du coût de la construction, indice des prix des
+  matériaux), mais aucune donnée au niveau transaction ;
+  \item aucun portail cadastral ouvert, comparable à celui existant en France, n'est disponible
+  pour le Sénégal.
+\end{itemize}
+
+Faute de source structurée existante, les données ont été collectées par extraction
+automatisée (\emph{web scraping}) depuis \textbf{Expat-Dakar}
+(\url{https://www.expat-dakar.com/}), plateforme d'annonces généralistes hébergeant plusieurs
+milliers d'annonces immobilières actives. Ce choix a été validé par une double vérification :
+la structure des pages (attributs \texttt{data-t-listing\_*} intégrés directement dans le HTML,
+encodant prix, type de bien, localisation et identifiant de façon structurée) permet une
+extraction fiable, et le fichier \texttt{robots.txt} du site autorise l'accès aux pages
+d'annonces (seuls les répertoires \texttt{/admin/}, \texttt{/compte/} et \texttt{/cdn-cgi/} sont
+exclus).
+
+\subsection{Processus de collecte}
+
+La collecte a été réalisée avec un script Python (\texttt{src/scraper.py}) s'appuyant sur les
+bibliothèques \texttt{requests} et \texttt{BeautifulSoup}. Le périmètre retenu couvre :
+\begin{itemize}
+  \item les annonces de \textbf{vente} (à l'exclusion de la location, pour ne pas mélanger deux
+  marchés aux dynamiques de prix différentes) ;
+  \item les catégories \textbf{maisons à vendre} et \textbf{appartements à vendre} (à
+  l'exclusion des terrains nus et des biens commerciaux, hors périmètre résidentiel) ;
+  \item l'ensemble du territoire sénégalais (pas de restriction géographique a priori).
+\end{itemize}
+
+Pour chaque annonce, les champs suivants sont extraits : identifiant, titre, catégorie, prix
+(FCFA), quartier, ville/région, nombre de chambres, surface (m\textsuperscript{2}), date de
+publication et URL. La pagination est parcourue jusqu'à réception d'une page vide ou d'une
+réponse HTTP 404 signalant la fin des résultats, avec un délai d'une seconde et demie entre
+chaque requête afin de limiter la charge sur le serveur cible. La collecte a produit
+\textbf{660 annonces brutes} (330 maisons, 330 appartements), sans doublon.
+
+\subsection{Pré-processing des données}
+
+Le nettoyage du jeu de données brut (détaillé et exécuté dans le notebook
+\texttt{01\_eda\_nettoyage.ipynb}) comprend les étapes suivantes :
+
+\begin{enumerate}
+  \item \textbf{Suppression des prix non exploitables.} Un seuil minimal de 5\,000\,000 FCFA a
+  été retenu après inspection manuelle des valeurs basses : en deçà, les annonces correspondent
+  systématiquement à des incohérences flagrantes plutôt qu'à de véritables biens bon marché — par
+  exemple, une villa de 1000 m\textsuperscript{2} au quartier des Ngor (où le prix moyen dépasse
+  200 millions FCFA) affichée à 1,5 million FCFA, probablement un prix « sur demande » ou une
+  mensualité mal étiquetée comme prix total. Cette étape a supprimé 43 annonces.
+  \item \textbf{Exclusion des biens hors périmètre résidentiel unitaire.} Les annonces présentant
+  une surface supérieure à 2000 m\textsuperscript{2} ou plus de 15 chambres ont été exclues, ces
+  valeurs correspondant vraisemblablement à des immeubles entiers plutôt qu'à un logement
+  individuel. Cette étape a supprimé 14 annonces supplémentaires.
+  \item \textbf{Imputation des valeurs manquantes.} Les champs \texttt{surface\_m2} et
+  \texttt{bedrooms}, absents respectivement pour 16{,}4~\% et 23{,}3~\% des annonces (non
+  systématiquement renseignés par les vendeurs), ont été imputés par la médiane du groupe
+  (catégorie $\times$ ville/région), avec repli sur la médiane globale en l'absence de groupe
+  suffisant.
+  \item \textbf{Regroupement des quartiers rares.} Le jeu de données comporte 92 quartiers
+  distincts pour 603 lignes, avec une forte hétérogénéité de représentation. Les quartiers
+  comptant moins de 5 annonces ont été regroupés dans une catégorie \texttt{Autre} afin de
+  limiter le risque de surapprentissage lors de l'encodage catégoriel, ramenant la cardinalité
+  effective à 34 catégories.
+\end{enumerate}
+
+Le jeu de données final compte \textbf{603 annonces}, décrites par : le type de bien
+(catégorie), le quartier (regroupé), la surface et le nombre de chambres, pour une cible à
+prédire (le prix en FCFA).
+
+\section{II. Méthodologie}
+
+\subsection{Choix des algorithmes et modèles}
+
+Quatre modèles ont été retenus et comparés :
+\begin{enumerate}
+  \item \textbf{Régression linéaire} — modèle de référence, non optimisé, permettant de juger
+  de l'apport réel des modèles plus complexes.
+  \item \textbf{Random Forest} \citep{breiman2001randomforests} — méthode ensembliste à base
+  d'arbres, optimisée.
+  \item \textbf{XGBoost} \citep{chen2016xgboost} — méthode de \emph{gradient boosting},
+  optimisée.
+  \item \textbf{MLP (Multi-Layer Perceptron)} — réseau de neurones artificiel, optimisé,
+  représentant l'approche deep learning du projet.
+\end{enumerate}
+
+\subsection{Justification des choix}
+
+La régression linéaire sert de ligne de base simple et interprétable, dans la tradition du
+modèle hédonique. Random Forest et XGBoost ont été retenus car la littérature
+(\S~2.2) montre leur supériorité constante sur les modèles linéaires pour ce type de problème,
+tout en restant robustes sur des jeux de données de taille modeste. Le MLP a été retenu pour
+répondre explicitement à l'objectif de comparaison avec une approche de deep learning formulé
+dans le sujet du projet.
+
+Un choix d'implémentation mérite d'être justifié : le réseau de neurones a été implémenté avec
+la classe \texttt{MLPRegressor} de scikit-learn plutôt qu'avec un framework de deep learning
+dédié (TensorFlow/Keras, utilisé par exemple dans des projets de prévision météorologique sur
+des séries beaucoup plus longues). Avec environ 600 lignes d'entraînement, un framework complet
+(gestion GPU, callbacks avancés) n'apporte aucun bénéfice ; un perceptron multicouche reste le
+niveau de complexité approprié, tout en permettant une véritable optimisation d'hyperparamètres
+(architecture, régularisation, taux d'apprentissage).
+
+\subsection{Paramètres et configuration}
+
+Chaque modèle (à l'exception de la régression linéaire) a été optimisé par
+\texttt{RandomizedSearchCV} (recherche aléatoire, 30 combinaisons tirées, validation croisée à
+5 plis mélangés), avec comme métrique d'optimisation l'erreur absolue moyenne négative
+(\texttt{neg\_mean\_absolute\_error}) calculée sur la cible transformée en logarithme (voir
+\S~3.5). Les espaces de recherche retenus sont résumés dans le tableau~\ref{tab:hyperparams}.
+
+\begin{table}[ht]
+\centering
+\caption{Espaces d'hyperparamètres explorés par modèle}
+\label{tab:hyperparams}
+\small
+\begin{tabular}{@{}ll>{\raggedright\arraybackslash}p{6.5cm}@{}}
+\toprule
+\textbf{Modèle} & \textbf{Hyperparamètre} & \textbf{Valeurs explorées} \\
+\midrule
+\multirow{5}{*}{Random Forest}
+ & n\_estimators        & 100, 200, 300, 400, 500 \\
+ & max\_depth            & None, 5, 10, 15, 20, 30 \\
+ & min\_samples\_split   & 2, 5, 10 \\
+ & min\_samples\_leaf    & 1, 2, 4 \\
+ & max\_features         & sqrt, log2, None \\
+\midrule
+\multirow{7}{*}{XGBoost}
+ & n\_estimators        & 100, 200, 300, 400 \\
+ & max\_depth            & 3, 4, 5, 6, 8 \\
+ & learning\_rate        & 0.01, 0.03, 0.05, 0.1, 0.2 \\
+ & subsample             & 0.6, 0.8, 1.0 \\
+ & colsample\_bytree     & 0.6, 0.8, 1.0 \\
+ & reg\_alpha            & 0, 0.1, 1 \\
+ & reg\_lambda           & 1, 1.5, 2 \\
+\midrule
+\multirow{4}{*}{MLP}
+ & hidden\_layer\_sizes  & (32,), (64,), (64,32), (128,64), (64,64,32) \\
+ & alpha                 & 0.0001, 0.001, 0.01, 0.1 \\
+ & learning\_rate\_init  & 0.0005, 0.001, 0.005, 0.01 \\
+ & activation            & relu, tanh \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Évaluation des performances}
+
+L'évaluation est réalisée sur un jeu de test indépendant, obtenu par partitionnement
+aléatoire (80~\% entraînement / 20~\% test, soit 482 et 121 annonces respectivement), non
+utilisé lors de l'optimisation des hyperparamètres.
+
+\subsection{Métriques utilisées}
+
+Quatre métriques complémentaires sont calculées, après retransformation des prédictions de
+l'échelle logarithmique vers le FCFA :
+
+\begin{itemize}
+  \item \textbf{RMSE} (\emph{Root Mean Squared Error}) : $\sqrt{\frac{1}{n}\sum_i (y_i -
+  \hat{y}_i)^2}$ — pénalise fortement les grandes erreurs.
+  \item \textbf{MAE} (\emph{Mean Absolute Error}) : $\frac{1}{n}\sum_i |y_i - \hat{y}_i|$ —
+  erreur moyenne absolue, en FCFA.
+  \item \textbf{MAPE} (\emph{Mean Absolute Percentage Error}) : $\frac{100}{n}\sum_i
+  \left|\frac{y_i - \hat{y}_i}{y_i}\right|$ — erreur moyenne relative, la plus interprétable pour
+  un public non technique.
+  \item \textbf{$R^2$} : part de variance de la cible expliquée par le modèle.
+\end{itemize}
+
+\subsection{Protocole d'évaluation}
+
+La distribution des prix étant fortement asymétrique (quelques biens haut de gamme, cf.
+Figure~\ref{fig:eda-distribution}), tous les modèles sont entraînés sur la cible transformée en
+$\log(1+prix)$, une pratique usuelle en modélisation de prix immobiliers qui stabilise la
+variance et améliore la performance des modèles linéaires et des réseaux de neurones, sans
+pénaliser les méthodes à base d'arbres, insensibles aux transformations monotones. Les
+prédictions sont retransformées en FCFA (fonction exponentielle inverse) avant le calcul des
+métriques finales, afin de conserver une interprétation directe des résultats.
+
+\section{Conclusion}
+
+Ce chapitre a détaillé la démarche méthodologique retenue : faute de données existantes, un
+jeu de données a été constitué par extraction automatisée puis nettoyé selon des règles
+justifiées et quantifiées ; quatre modèles ont été sélectionnés pour couvrir à la fois
+l'approche hédonique classique, les méthodes ensemblistes et le deep learning, avec un
+protocole d'optimisation et d'évaluation homogène permettant une comparaison rigoureuse,
+présentée au chapitre suivant.

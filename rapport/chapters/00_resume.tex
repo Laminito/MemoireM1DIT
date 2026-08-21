@@ -1,0 +1,32 @@
+\chapter*{Résumé}
+\addcontentsline{toc}{chapter}{Résumé}
+
+Ce projet informatique de Master 1 présente le développement d'un système d'estimation
+automatique de la valeur des biens immobiliers résidentiels (maisons et appartements) au
+Sénégal, à partir de techniques d'apprentissage automatique. L'objectif est double : d'une
+part comparer plusieurs modèles de prédiction en optimisant systématiquement leurs
+hyperparamètres, et d'autre part rendre ces résultats accessibles à travers une interface
+graphique interactive.
+
+En l'absence de jeu de données immobilier sénégalais existant, un corpus de 660 annonces de
+vente a été collecté par extraction automatisée (\emph{web scraping}) depuis la plateforme
+Expat-Dakar, couvrant l'ensemble du territoire national. Après nettoyage (suppression des prix
+non exploitables et des biens hors périmètre résidentiel unitaire), un jeu de données de 603
+annonces a été retenu, décrit par la surface, le nombre de chambres, le type de bien et le
+quartier.
+
+Quatre modèles ont été entraînés et comparés : une régression linéaire (référence), une
+forêt aléatoire (\emph{Random Forest}), un modèle de \emph{gradient boosting} (XGBoost), et un
+réseau de neurones multicouches (MLP) — les trois derniers optimisés par recherche
+aléatoire d'hyperparamètres avec validation croisée. Le modèle Random Forest optimisé obtient
+les meilleures performances sur le jeu de test (MAE de 73,3 millions FCFA, MAPE de 34,0~\%,
+$R^2$ de 0,751), devançant XGBoost et le réseau de neurones — un résultat cohérent avec la
+littérature sur des jeux de données tabulaires de taille modeste.
+
+Une application interactive développée avec Streamlit permet enfin d'estimer le prix d'un bien
+à partir de ses caractéristiques, d'explorer le jeu de données et de comparer visuellement les
+performances des différents modèles.
+
+\vspace{0.5cm}
+\noindent\textbf{Mots-clés :} immobilier, apprentissage automatique, optimisation
+d'hyperparamètres, Random Forest, XGBoost, réseau de neurones, Sénégal, Streamlit.

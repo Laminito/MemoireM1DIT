@@ -1,0 +1,96 @@
+\chapter{État de l'art}
+
+\section{État de l'art sur le domaine d'application}
+
+L'estimation de la valeur d'un bien immobilier repose historiquement sur le \textbf{modèle
+hédonique}, formalisé par \citet{rosen1974hedonic}. Ce modèle postule qu'un bien composite
+comme un logement peut être décomposé en un ensemble de caractéristiques (surface, nombre de
+pièces, localisation, qualité de construction, etc.), chacune contribuant implicitement au prix
+final observé sur le marché. Cette approche, traditionnellement opérationnalisée par une
+régression linéaire multiple, reste la référence en économie urbaine et sous-tend encore la
+méthode dite « des comparables » utilisée par les agents immobiliers et notaires : le prix d'un
+bien est estimé par analogie avec des transactions récentes de biens aux caractéristiques
+proches.
+
+Cette approche présente cependant des limites bien documentées : elle suppose des relations
+linéaires entre caractéristiques et prix, peine à capturer les interactions complexes entre
+variables (par exemple, l'effet de la surface sur le prix n'est pas le même selon le quartier),
+et dépend fortement de la disponibilité de transactions comparables récentes — une condition
+difficile à remplir dans un marché comme celui du Sénégal, où les données de transactions ne
+sont pas centralisées.
+
+L'essor de l'apprentissage automatique a permis l'émergence des \emph{Automated Valuation
+Models} (AVM), qui remplacent ou complètent le modèle hédonique classique par des algorithmes
+capables de capturer des relations non linéaires et des interactions complexes entre
+caractéristiques, sans hypothèse a priori sur la forme fonctionnelle de la relation entre les
+variables explicatives et le prix.
+
+\section{État de l'art sur les travaux de recherche pertinents liés au sujet}
+
+Plusieurs familles de modèles ont été appliquées à la prédiction de prix immobiliers dans la
+littérature récente.
+
+Les \textbf{méthodes ensemblistes à base d'arbres de décision} occupent une place centrale.
+\citet{breiman2001randomforests} a introduit le \emph{Random Forest}, qui combine un grand
+nombre d'arbres entraînés sur des sous-échantillons aléatoires des données et des variables,
+réduisant la variance par rapport à un arbre unique. \citet{chen2016xgboost} a ensuite proposé
+XGBoost, une implémentation optimisée du \emph{gradient boosting}, qui construit les arbres de
+façon séquentielle pour corriger les erreurs des précédents. Appliqués à la prédiction de prix
+immobiliers, \citet{truong2020housing} comparent régression linéaire, k plus proches voisins,
+CART et méthodes ensemblistes, et montrent la supériorité systématique des approches
+ensemblistes sur les modèles linéaires classiques. \citet{sharma2024optimal} comparent plus
+spécifiquement régression linéaire multiple, SVR, Random Forest, MLP et XGBoost sur le jeu de
+données Ames Housing (Iowa, États-Unis) et concluent à la supériorité de XGBoost, avec un
+$R^2$ proche de 0,89 — un résultat obtenu toutefois sur un jeu de données nettement plus riche
+(79 variables descriptives) que celui mobilisé dans ce projet.
+
+Les \textbf{réseaux de neurones profonds} ont également été explorés. \citet{yazdani2021mldl}
+comparent modèles hédoniques classiques, méthodes de machine learning (Random Forest, k plus
+proches voisins) et de deep learning pour la prédiction de prix immobiliers, et observent que
+l'avantage des réseaux de neurones dépend fortement du volume de données disponible : sur des
+jeux de données de taille modeste, les méthodes ensemblistes à base d'arbres restent souvent
+compétitives, voire supérieures, aux architectures de deep learning.
+
+Enfin, un travail directement pertinent pour le contexte de ce projet est celui de
+\citet{nwankwo2023lagos}, qui appliquent plusieurs modèles de machine learning (dont un réseau
+de neurones artificiel et XGBoost) à la prédiction des prix immobiliers à Lagos, au Nigeria — un
+marché ouest-africain partageant avec le Sénégal des caractéristiques structurelles proches
+(données peu centralisées, forte hétérogénéité des annonces en ligne). Les auteurs confirment
+l'efficacité des approches ensemblistes et des réseaux de neurones dans ce contexte, tout en
+soulignant le rôle déterminant des variables de localisation.
+
+L'écosystème logiciel de ce projet s'appuie par ailleurs sur la bibliothèque scikit-learn
+\citep{pedregosa2011scikitlearn}, largement utilisée dans la littérature pour l'implémentation
+reproductible de pipelines de machine learning.
+
+\section{Identification des zones de recherche manquantes liées au sujet}
+
+Cette revue de la littérature met en évidence plusieurs zones encore peu explorées, que ce
+projet cherche en partie à adresser :
+
+\begin{itemize}
+  \item \textbf{Absence de données et de travaux spécifiques au Sénégal.} Contrairement au
+  Nigeria \citep{nwankwo2023lagos} ou aux marchés occidentaux disposant de jeux de données de
+  référence (Ames Housing, Boston Housing), aucun jeu de données immobilier sénégalais n'est
+  publiquement disponible, et aucun travail de recherche appliquant le machine learning à ce
+  marché n'a été identifié au moment de la rédaction de ce document.
+  \item \textbf{Comparaison systématique méthodes ensemblistes / deep learning sur données
+  ouest-africaines restreintes.} La littérature suggère que l'avantage du deep learning sur les
+  méthodes ensemblistes dépend du volume de données \citep{yazdani2021mldl}, mais ce compromis
+  n'a pas été quantifié sur un marché immobilier africain à faible volume de données
+  structurées.
+  \item \textbf{Accessibilité des outils produits.} La grande majorité des travaux cités se
+  limitent à une évaluation académique des modèles, sans restitution accessible à un utilisateur
+  non technique — un manque que ce projet adresse via le développement d'une interface graphique
+  interactive.
+\end{itemize}
+
+\section{Conclusion}
+
+Le modèle hédonique reste le cadre théorique de référence pour l'estimation immobilière, mais
+les approches d'apprentissage automatique — en particulier les méthodes ensemblistes à base
+d'arbres — s'imposent progressivement comme des alternatives plus performantes, sous réserve
+d'un volume de données suffisant. Le contexte sénégalais, marqué par l'absence de données
+publiques structurées, constitue à la fois la principale difficulté méthodologique de ce projet
+et sa principale zone de contribution : la constitution d'un premier jeu de données exploitable
+et la comparaison empirique de plusieurs familles de modèles sur ce marché spécifique.
