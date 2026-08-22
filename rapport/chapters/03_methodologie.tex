@@ -75,7 +75,7 @@ Le nettoyage du jeu de données brut (détaillé et exécuté dans le notebook
 \begin{enumerate}
   \item \textbf{Suppression des prix non exploitables.} Un seuil minimal de 5\,000\,000 FCFA a
   été retenu après inspection manuelle des valeurs basses : en deçà, les annonces correspondent
-  systématiquement à des incohérences flagrantes plutôt qu'à de véritables biens bon marché — par
+  systématiquement à des incohérences flagrantes plutôt qu'à de véritables biens bon marché : par
   exemple, une villa de 1000 m\textsuperscript{2} au quartier des Ngor (où le prix moyen dépasse
   200 millions FCFA) affichée à 1,5 million FCFA, probablement un prix « sur demande » ou une
   mensualité mal étiquetée comme prix total. Cette étape a supprimé 43 annonces.
@@ -105,13 +105,13 @@ prédire (le prix en FCFA).
 
 Quatre modèles ont été retenus et comparés :
 \begin{enumerate}
-  \item \textbf{Régression linéaire} — modèle de référence, non optimisé, permettant de juger
+  \item \textbf{Régression linéaire} : modèle de référence, non optimisé, permettant de juger
   de l'apport réel des modèles plus complexes.
-  \item \textbf{Random Forest} \citep{breiman2001randomforests} — méthode ensembliste à base
+  \item \textbf{Random Forest} \citep{breiman2001randomforests} : méthode ensembliste à base
   d'arbres, optimisée.
-  \item \textbf{XGBoost} \citep{chen2016xgboost} — méthode de \emph{gradient boosting},
+  \item \textbf{XGBoost} \citep{chen2016xgboost} : méthode de \emph{gradient boosting},
   optimisée.
-  \item \textbf{MLP (Multi-Layer Perceptron)} — réseau de neurones artificiel, optimisé,
+  \item \textbf{MLP (Multi-Layer Perceptron)} : réseau de neurones artificiel, optimisé,
   représentant l'approche deep learning du projet.
 \end{enumerate}
 
@@ -187,11 +187,11 @@ l'échelle logarithmique vers le FCFA :
 
 \begin{itemize}
   \item \textbf{RMSE} (\emph{Root Mean Squared Error}) : $\sqrt{\frac{1}{n}\sum_i (y_i -
-  \hat{y}_i)^2}$ — pénalise fortement les grandes erreurs.
-  \item \textbf{MAE} (\emph{Mean Absolute Error}) : $\frac{1}{n}\sum_i |y_i - \hat{y}_i|$ —
+  \hat{y}_i)^2}$, pénalise fortement les grandes erreurs.
+  \item \textbf{MAE} (\emph{Mean Absolute Error}) : $\frac{1}{n}\sum_i |y_i - \hat{y}_i|$,
   erreur moyenne absolue, en FCFA.
   \item \textbf{MAPE} (\emph{Mean Absolute Percentage Error}) : $\frac{100}{n}\sum_i
-  \left|\frac{y_i - \hat{y}_i}{y_i}\right|$ — erreur moyenne relative, la plus interprétable pour
+  \left|\frac{y_i - \hat{y}_i}{y_i}\right|$, erreur moyenne relative, la plus interprétable pour
   un public non technique.
   \item \textbf{$R^2$} : part de variance de la cible expliquée par le modèle.
 \end{itemize}

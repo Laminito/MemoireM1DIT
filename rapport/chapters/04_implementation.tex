@@ -40,7 +40,7 @@ Cette asymétrie justifie la transformation logarithmique de la cible retenue en
 
 Le prix médian varie fortement selon le quartier (Figure~\ref{fig:eda-neighborhood}), les
 quartiers résidentiels haut de gamme de Dakar (Almadies, Ngor, Mermoz) affichant des médianes
-nettement supérieures à celles des quartiers périphériques — un résultat cohérent avec la
+nettement supérieures à celles des quartiers périphériques, un résultat cohérent avec la
 littérature sur le rôle central de la localisation dans la formation des prix
 \citep{nwankwo2023lagos}.
 
@@ -117,14 +117,14 @@ ensemblistes par rapport à l'approche hédonique linéaire classique.
 \begin{figure}[ht]
   \centering
   \includegraphics[width=0.95\textwidth]{figures/model_02.png}
-  \caption{Importance des variables — Random Forest et XGBoost}
+  \caption{Importance des variables : Random Forest et XGBoost}
   \label{fig:feature-importance}
 \end{figure}
 
 L'analyse de l'importance des variables (Figure~\ref{fig:feature-importance}) confirme les
 observations de l'analyse exploratoire : la surface est systématiquement la variable la plus
 déterminante, suivie par les indicatrices de quartier les plus fréquentes (Almadies, Ngor,
-Mermoz), tandis que le nombre de chambres contribue de façon plus marginale — cohérent avec sa
+Mermoz), tandis que le nombre de chambres contribue de façon plus marginale, cohérent avec sa
 corrélation plus faible observée en Figure~\ref{fig:eda-corr}.
 
 \subsubsection{Comparaison avec la littérature}
@@ -135,8 +135,8 @@ inférieures à celles rapportées par \citet{sharma2024optimal} sur le jeu de d
 données (603 contre plusieurs milliers d'observations pour Ames Housing) et surtout la richesse
 des variables descriptives (4 variables mobilisées ici, contre 79 pour Ames Housing, incluant
 l'âge du bien, la qualité des matériaux, l'état de la toiture, etc., absentes des annonces
-Expat-Dakar). Le classement relatif des modèles — méthodes ensemblistes surpassant nettement la
-régression linéaire — est en revanche cohérent avec \citet{truong2020housing} et
+Expat-Dakar). Le classement relatif des modèles (méthodes ensemblistes surpassant nettement la
+régression linéaire) est en revanche cohérent avec \citet{truong2020housing} et
 \citet{nwankwo2023lagos}.
 
 Le fait que le MLP n'égale pas Random Forest est également cohérent avec les observations de
@@ -149,10 +149,10 @@ d'arbres, plus robustes dans ce régime de données.
 
 Plusieurs limites doivent être soulignées. \textbf{Premièrement}, la richesse des
 caractéristiques disponibles est restreinte aux champs affichés systématiquement par
-Expat-Dakar (surface, chambres, quartier, type) ; des variables reconnues comme déterminantes
-dans la littérature — âge du bien, état/qualité de construction, proximité des axes routiers ou
-équipements, statut foncier (titre foncier ou non, un facteur pourtant mentionné dans plusieurs
-titres d'annonces observées lors de la collecte) — n'ont pas pu être exploitées de façon
+Expat-Dakar (surface, chambres, quartier, type). Des variables reconnues comme déterminantes
+dans la littérature (âge du bien, état/qualité de construction, proximité des axes routiers ou
+équipements, statut foncier (titre foncier ou non), un facteur pourtant mentionné dans plusieurs
+titres d'annonces observées lors de la collecte) n'ont pas pu être exploitées de façon
 structurée. \textbf{Deuxièmement}, la concentration géographique du jeu de données (85~\% des
 annonces à Dakar) limite la capacité du modèle à généraliser sur le reste du territoire.
 \textbf{Troisièmement}, les prix collectés sont des prix affichés, négociables par nature, et
@@ -190,16 +190,16 @@ Le pipeline du projet est organisé en quatre étapes séquentielles et indépen
 matérialisées par autant de composants :
 
 \begin{enumerate}
-  \item \texttt{src/scraper.py} — collecte les annonces et produit\\
+  \item \texttt{src/scraper.py} : collecte les annonces et produit\\
   \url{data/raw/expat_dakar_listings_raw.csv}.
-  \item \texttt{notebooks/01\_eda\_nettoyage.ipynb} — nettoie les données et produit\\
+  \item \texttt{notebooks/01\_eda\_nettoyage.ipynb} : nettoie les données et produit\\
   \url{data/processed/expat_dakar_listings_clean.csv}, accompagné des visualisations
   exploratoires.
-  \item \texttt{notebooks/02\_modelisation.ipynb} — encode les variables, entraîne et optimise
+  \item \texttt{notebooks/02\_modelisation.ipynb} : encode les variables, entraîne et optimise
   les quatre modèles, puis sauvegarde les pipelines entraînés (\texttt{models/*.joblib}) ainsi
   qu'un fichier de métadonnées (\texttt{models/metadata.json}) décrivant les catégories
   disponibles, les plages de valeurs et les performances de chaque modèle.
-  \item \texttt{app.py} — application Streamlit consommant les modèles et métadonnées
+  \item \texttt{app.py} : application Streamlit consommant les modèles et métadonnées
   sauvegardés pour proposer prédiction, exploration des données et comparaison des modèles.
 \end{enumerate}
 
@@ -210,10 +210,15 @@ façon identique à l'entraînement et à l'inférence dans l'application finale
 
 \subsection{Architecture et services du déploiement}
 
-L'application est exécutable localement (\texttt{streamlit run app.py}) et a été conçue pour
-être déployable sans modification sur \emph{Streamlit Community Cloud}, à l'image du projet de
-référence pris comme modèle pour ce document. Un fichier \texttt{requirements.txt} liste les
-dépendances nécessaires à la reproduction de l'environnement d'exécution.
+L'application est exécutable localement (\texttt{streamlit run app.py}) et a été déployée sur
+\emph{Streamlit Community Cloud}, à l'image du projet de référence pris comme modèle pour ce
+document. Un fichier \texttt{requirements.txt} liste les dépendances nécessaires à la
+reproduction de l'environnement d'exécution.
+
+\begin{itemize}
+  \item \textbf{Lien d'accès :} \url{https://estimation-valeurs-immobilieres.streamlit.app/}
+  \item \textbf{Code source :} \url{https://github.com/Laminito/MemoireM1DIT.git}
+\end{itemize}
 
 \section{Conclusion}
 
@@ -222,6 +227,6 @@ marché sénégalais à partir de données librement accessibles en ligne. Le mo
 optimisé constitue la meilleure solution identifiée, avec des performances certes inférieures à
 celles obtenues sur des jeux de données occidentaux plus riches, mais cohérentes avec l'état de
 l'art compte tenu des contraintes de données propres au contexte sénégalais. L'architecture
-modulaire retenue — collecte, nettoyage, modélisation, restitution — sépare clairement les
+modulaire retenue (collecte, nettoyage, modélisation, restitution) sépare clairement les
 responsabilités et facilite l'évolution future de chaque composant, discutée en conclusion
 générale.

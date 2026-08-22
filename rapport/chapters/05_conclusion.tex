@@ -16,9 +16,11 @@ graphique interactive. Les trois objectifs fixés en introduction ont été atte
   pour les trois modèles les plus complexes ; le modèle Random Forest optimisé obtient les
   meilleures performances (MAE de 73,3 millions FCFA, MAPE de 34,0~\%, $R^2$ de 0,751),
   devançant XGBoost et le réseau de neurones MLP ;
-  \item une application Streamlit interactive permet d'estimer le prix d'un bien, de comparer
-  les prédictions des quatre modèles, et d'explorer visuellement le jeu de données et les
-  performances des modèles.
+  \item une application Streamlit interactive, déployée publiquement à l'adresse
+  \url{https://estimation-valeurs-immobilieres.streamlit.app/} (code source disponible sur
+  \url{https://github.com/Laminito/MemoireM1DIT.git}), permet d'estimer le prix d'un bien, de
+  comparer les prédictions des quatre modèles, et d'explorer visuellement le jeu de données et
+  les performances des modèles.
 \end{itemize}
 
 Le projet confirme, dans le contexte spécifique et peu documenté du marché immobilier
@@ -37,8 +39,8 @@ Plusieurs axes d'amélioration se dégagent de ce travail :
   d'augmenter le volume et la diversité géographique du jeu de données, actuellement très
   concentré sur Dakar.
   \item \textbf{Enrichissement des variables.} L'ajout de caractéristiques non disponibles dans
-  les annonces actuelles — âge du bien, statut foncier (titre foncier), proximité d'axes ou
-  d'équipements, à obtenir par géocodage des adresses — permettrait de rapprocher les
+  les annonces actuelles (âge du bien, statut foncier, proximité d'axes ou d'équipements),
+  à obtenir par géocodage des adresses, permettrait de rapprocher les
   performances du modèle de celles obtenues sur des jeux de données occidentaux plus riches en
   variables.
   \item \textbf{Suivi temporel des prix.} La collecte périodique des mêmes annonces

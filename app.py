@@ -80,9 +80,9 @@ page = st.sidebar.radio(
     ["Accueil", "Prédiction", "Exploration des données", "Comparaison des modèles"],
 )
 
-# ---------------------------------------------------------------------------
+ 
 # ACCUEIL
-# ---------------------------------------------------------------------------
+
 if page == "Accueil":
     st.title("🏠 Estimation de la valeur des biens immobiliers résidentiels au Sénégal")
     st.markdown("""
@@ -116,9 +116,9 @@ if page == "Accueil":
         width="stretch",
     )
 
-# ---------------------------------------------------------------------------
+ 
 # PRÉDICTION
-# ---------------------------------------------------------------------------
+ 
 elif page == "Prédiction":
     st.title("Prédiction du prix d'un bien")
 
@@ -174,9 +174,9 @@ elif page == "Prédiction":
         st.plotly_chart(fig, width="stretch")
         st.dataframe(comparison_df.style.format({"Prix estimé (FCFA)": "{:,.0f}"}), width="stretch")
 
-# ---------------------------------------------------------------------------
+ 
 # EXPLORATION DES DONNÉES
-# ---------------------------------------------------------------------------
+ 
 elif page == "Exploration des données":
     st.title("Exploration des données")
     df = load_clean_data()
@@ -228,9 +228,9 @@ elif page == "Exploration des données":
         width="stretch",
     )
 
-# ---------------------------------------------------------------------------
+ 
 # COMPARAISON DES MODÈLES
-# ---------------------------------------------------------------------------
+ 
 elif page == "Comparaison des modèles":
     st.title("Comparaison des modèles")
 

@@ -15,7 +15,7 @@ proches.
 Cette approche présente cependant des limites bien documentées : elle suppose des relations
 linéaires entre caractéristiques et prix, peine à capturer les interactions complexes entre
 variables (par exemple, l'effet de la surface sur le prix n'est pas le même selon le quartier),
-et dépend fortement de la disponibilité de transactions comparables récentes — une condition
+et dépend fortement de la disponibilité de transactions comparables récentes, une condition
 difficile à remplir dans un marché comme celui du Sénégal, où les données de transactions ne
 sont pas centralisées.
 
@@ -41,7 +41,7 @@ CART et méthodes ensemblistes, et montrent la supériorité systématique des a
 ensemblistes sur les modèles linéaires classiques. \citet{sharma2024optimal} comparent plus
 spécifiquement régression linéaire multiple, SVR, Random Forest, MLP et XGBoost sur le jeu de
 données Ames Housing (Iowa, États-Unis) et concluent à la supériorité de XGBoost, avec un
-$R^2$ proche de 0,89 — un résultat obtenu toutefois sur un jeu de données nettement plus riche
+$R^2$ proche de 0,89, un résultat obtenu toutefois sur un jeu de données nettement plus riche
 (79 variables descriptives) que celui mobilisé dans ce projet.
 
 Les \textbf{réseaux de neurones profonds} ont également été explorés. \citet{yazdani2021mldl}
@@ -53,7 +53,7 @@ compétitives, voire supérieures, aux architectures de deep learning.
 
 Enfin, un travail directement pertinent pour le contexte de ce projet est celui de
 \citet{nwankwo2023lagos}, qui appliquent plusieurs modèles de machine learning (dont un réseau
-de neurones artificiel et XGBoost) à la prédiction des prix immobiliers à Lagos, au Nigeria — un
+de neurones artificiel et XGBoost) à la prédiction des prix immobiliers à Lagos, au Nigeria, un
 marché ouest-africain partageant avec le Sénégal des caractéristiques structurelles proches
 (données peu centralisées, forte hétérogénéité des annonces en ligne). Les auteurs confirment
 l'efficacité des approches ensemblistes et des réseaux de neurones dans ce contexte, tout en
@@ -81,15 +81,15 @@ projet cherche en partie à adresser :
   structurées.
   \item \textbf{Accessibilité des outils produits.} La grande majorité des travaux cités se
   limitent à une évaluation académique des modèles, sans restitution accessible à un utilisateur
-  non technique — un manque que ce projet adresse via le développement d'une interface graphique
+  non technique, un manque que ce projet adresse via le développement d'une interface graphique
   interactive.
 \end{itemize}
 
 \section{Conclusion}
 
 Le modèle hédonique reste le cadre théorique de référence pour l'estimation immobilière, mais
-les approches d'apprentissage automatique — en particulier les méthodes ensemblistes à base
-d'arbres — s'imposent progressivement comme des alternatives plus performantes, sous réserve
+les approches d'apprentissage automatique, en particulier les méthodes ensemblistes à base
+d'arbres, s'imposent progressivement comme des alternatives plus performantes, sous réserve
 d'un volume de données suffisant. Le contexte sénégalais, marqué par l'absence de données
 publiques structurées, constitue à la fois la principale difficulté méthodologique de ce projet
 et sa principale zone de contribution : la constitution d'un premier jeu de données exploitable
