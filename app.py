@@ -1,5 +1,5 @@
 """
-Interface interactive — Estimation de la valeur des biens immobiliers résidentiels au Sénégal
+Interface interactive : Estimation de la valeur des biens immobiliers résidentiels au Sénégal
 Mémoire M1, Dakar Institute of Technology.
 
 Lancement local : streamlit run app.py
@@ -86,7 +86,7 @@ page = st.sidebar.radio(
 if page == "Accueil":
     st.title("🏠 Estimation de la valeur des biens immobiliers résidentiels au Sénégal")
     st.markdown("""
-    Projet Informatique — Master 1, Dakar Institute of Technology (Intelligence Artificielle).
+    Projet Informatique, Master 1, Dakar Institute of Technology (Intelligence Artificielle).
 
     Cette application permet d'estimer le prix de vente d'un bien résidentiel (maison ou appartement)
     au Sénégal, à partir d'un modèle de machine learning entraîné sur des annonces réelles, et
@@ -103,7 +103,7 @@ if page == "Accueil":
     st.markdown("""
     - **Source des données** : annonces de vente (maisons + appartements) publiées sur Expat-Dakar, collectées par scraping.
     - **Nettoyage** : suppression des prix non exploitables et des biens hors périmètre résidentiel unitaire (immeubles entiers).
-    - **Modèles comparés** : Régression linéaire (référence), Random Forest, XGBoost et un réseau de neurones (MLP) —
+    - **Modèles comparés** : Régression linéaire (référence), Random Forest, XGBoost et un réseau de neurones (MLP),
       les trois derniers optimisés par recherche d'hyperparamètres avec validation croisée.
     - **Cible d'entraînement** : logarithme du prix (distribution très asymétrique), reconverti en FCFA pour l'évaluation.
     """)
@@ -156,9 +156,9 @@ elif page == "Prédiction":
             st.caption(
                 f"Fourchette approximative (± erreur absolue moyenne du modèle sur le jeu de test, "
                 f"pas un intervalle de confiance statistique) : "
-                f"{format_fcfa(max(0, predicted_price - mae))} — {format_fcfa(predicted_price + mae)}"
+                f"{format_fcfa(max(0, predicted_price - mae))} à {format_fcfa(predicted_price + mae)}"
             )
-            st.info(f"Modèle utilisé : **{model_display}** — MAPE observé sur le jeu de test : {mape:.1f}%")
+            st.info(f"Modèle utilisé : **{model_display}**, MAPE observé sur le jeu de test : {mape:.1f}%")
         else:
             st.write("Renseignez les caractéristiques du bien et cliquez sur **Estimer le prix**.")
 
@@ -240,13 +240,13 @@ elif page == "Comparaison des modèles":
 
     col1, col2, col3 = st.columns(3)
     with col1:
-        fig = px.bar(results_df, x="Modèle", y="RMSE_FCFA", title="RMSE (FCFA) — plus bas = meilleur", color="Modèle")
+        fig = px.bar(results_df, x="Modèle", y="RMSE_FCFA", title="RMSE (FCFA), plus bas = meilleur", color="Modèle")
         st.plotly_chart(fig, width="stretch")
     with col2:
-        fig = px.bar(results_df, x="Modèle", y="MAPE_%", title="MAPE (%) — plus bas = meilleur", color="Modèle")
+        fig = px.bar(results_df, x="Modèle", y="MAPE_%", title="MAPE (%), plus bas = meilleur", color="Modèle")
         st.plotly_chart(fig, width="stretch")
     with col3:
-        fig = px.bar(results_df, x="Modèle", y="R2", title="R² — plus haut = meilleur", color="Modèle")
+        fig = px.bar(results_df, x="Modèle", y="R2", title="R², plus haut = meilleur", color="Modèle")
         st.plotly_chart(fig, width="stretch")
 
     st.subheader("Tableau détaillé")
@@ -259,6 +259,6 @@ elif page == "Comparaison des modèles":
     **Lecture des résultats** : le Random Forest optimisé obtient les meilleures performances sur ce jeu de données
     (~600 annonces), y compris face au réseau de neurones (MLP). Sur un volume de données de cet ordre de grandeur,
     les méthodes d'ensemble à base d'arbres généralisent généralement mieux qu'un réseau de neurones, qui a besoin
-    de davantage de données pour exprimer son avantage — un constat cohérent avec la littérature en apprentissage
+    de davantage de données pour exprimer son avantage, un constat cohérent avec la littérature en apprentissage
     automatique sur données tabulaires de petite/moyenne taille.
     """)
